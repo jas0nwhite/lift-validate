@@ -1,40 +1,53 @@
-name := "validate"
+import LiftModuleKeys.{liftVersion, liftEdition}
 
-description := "Lift validate module"
-
+moduleName := "lift-validate"
 organization := "net.liftmodules"
-
-version := "1.0"
-
+description := "Lift validate module"
 licenses += ("Apache 2.0 License", url("http://www.apache.org/licenses/LICENSE-2.0"))
-
 homepage := Some(url("http://github.com/limansky/lift-validate"))
+version in ThisBuild := "2.0-SNAPSHOT"
+liftVersion in ThisBuild := {
+  liftVersion ?? "3.3.0"
+}.value
+liftEdition in ThisBuild := {
+  liftVersion apply {
+    _.substring(0, 3)
+  }
+}.value
+moduleName := {
+  name.value + "_" + liftEdition.value
+}
+scalaVersion in ThisBuild := "2.12.8"
+scalacOptions ++= Seq("-unchecked", "-deprecation")
+crossScalaVersions := Seq("2.12.8", "2.10.5", "2.9.2")
 
-liftVersion <<= liftVersion ?? "2.6.2"
+logLevel := Level.Info
 
-liftEdition <<= liftVersion apply { _.substring(0,3) }
+resolvers ++= Seq(
+  "Scala Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
+  "Scala" at "https://oss.sonatype.org/content/groups/scala-tools/"
+)
 
-moduleName <<= (name, liftEdition) { (n, e) => n + "_" + e }
-
-scalaVersion := "2.11.7"
-
-crossScalaVersions := Seq("2.10.5", "2.9.2")
-
-resolvers += Resolver.sonatypeRepo("snapshots")
-
-libraryDependencies <++= liftVersion { v => Seq(
-  "net.liftweb"     %% "lift-webkit"    % v         % "provided",
-  "net.liftweb"     %% "lift-json"      % v         % "provided",
-  "org.mockito"     %  "mockito-core"   % "1.10.19"   % "test"
-)}
-
-libraryDependencies <+= scalaVersion { sv =>
-  val scalatestV = if (sv == "2.9.2") "1.9.2" else "2.2.4"
-  "org.scalatest"   %% "scalatest"      % scalatestV   % "test"
+libraryDependencies in ThisBuild ++= {
+  "net.liftweb" %% "lift-webkit" % liftVersion.value % "provided" ::
+  "net.liftweb" %% "lift-json" % liftVersion.value % "provided" ::
+  "org.mockito" % "mockito-core" % "1.10.19" % "test" ::
+  Nil
 }
 
-scalariformSettings
+libraryDependencies in ThisBuild += {
+  val scalatestV = scalaVersion.value match {
+    case "2.9.2"  => "1.9.2"
+    case "2.10.5" => "2.2.4"
+    case _        => "3.0.8"
+  }
 
+  "org.scalatest" %% "scalatest" % scalatestV % "test"
+}
+
+//scalariformSettings
+
+/*
 publishMavenStyle := true
 
 publishArtifact in Test := false
@@ -56,15 +69,16 @@ publishTo := {
 }
 
 pomExtra := (
-  <developers>
-    <developer>
-      <id>limansky</id>
-      <name>Mike Limansky</name>
-      <url>http://github.com/limansky</url>
-    </developer>
-    <developer>
-      <id>victor</id>
-      <name>Victor Mikheev</name>
-      <url>https://github.com/VictorMikheev</url>
-    </developer>
-  </developers>)
+            <developers>
+              <developer>
+                <id>limansky</id>
+                <name>Mike Limansky</name>
+                <url>http://github.com/limansky</url>
+              </developer>
+              <developer>
+                <id>victor</id>
+                <name>Victor Mikheev</name>
+                <url>https://github.com/VictorMikheev</url>
+              </developer>
+            </developers>)
+*/

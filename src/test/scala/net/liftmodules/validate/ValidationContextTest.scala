@@ -16,12 +16,12 @@
 package net.liftmodules.validate
 
 import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import net.liftmodules.validate.Validators._
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 
-class ValidationContextTest extends FlatSpec with ContextTest with ShouldMatchers with MockitoSugar {
+class ValidationContextTest extends FlatSpec with ContextTest with Matchers with MockitoSugar {
 
   "ValidationContext" should behave like anyContext(ValidationContext())
 

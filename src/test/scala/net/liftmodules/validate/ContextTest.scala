@@ -15,11 +15,11 @@
  */
 package net.liftmodules.validate
 
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.FlatSpec
 import Validators._
 
-trait ContextTest extends ShouldMatchers { this: FlatSpec =>
+trait ContextTest extends Matchers { this: FlatSpec =>
 
   def anyContext(context: => ValidationContext) {
 

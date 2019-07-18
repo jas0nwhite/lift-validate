@@ -34,34 +34,32 @@ package object options {
   object Bs3Options {
     def apply(): Options = Options(
       "highlight" ->
-        AnonFunc("label",
+        AnonFunc(
+          "label",
           Jq(JsVar("label")) ~> JsFunc("closest", ".form-group")
             ~> JsFunc("removeClass", "has-success")
-            ~> JsFunc("addClass", "has-error")
-        ),
+            ~> JsFunc("addClass", "has-error")),
       "success" ->
-        AnonFunc("label",
+        AnonFunc(
+          "label",
           Jq(JsVar("label")) ~> JsFunc("closest", ".form-group")
             ~> JsFunc("removeClass", "has-error")
-            ~> JsFunc("addClass", "has-success")
-        )
-    )
+            ~> JsFunc("addClass", "has-success")))
   }
 
   object Bs2Options {
     def apply(): Options = Options(
       "highlight" ->
-        AnonFunc("label",
+        AnonFunc(
+          "label",
           Jq(JsVar("label")) ~> JsFunc("closest", ".control-group")
             ~> JsFunc("removeClass", "success")
-            ~> JsFunc("addClass", "error")
-        ),
+            ~> JsFunc("addClass", "error")),
       "success" ->
-        AnonFunc("label",
+        AnonFunc(
+          "label",
           Jq(JsVar("label")) ~> JsFunc("closest", ".control-group")
             ~> JsFunc("removeClass", "error")
-            ~> JsFunc("addClass", "success")
-        )
-    )
+            ~> JsFunc("addClass", "success")))
   }
 }

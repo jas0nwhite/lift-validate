@@ -49,9 +49,9 @@ object Validators {
    * @param isEnabled allows to disable validator on some condition.
    */
   case class ValidateRequired(
-      override val value: () => String,
-      isEnabled: () => Boolean = () => true,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+    override val value: () => String,
+    isEnabled: () => Boolean = () => true,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = !isEnabled() || Option(value()).exists(_.trim.nonEmpty)
 
@@ -61,9 +61,9 @@ object Validators {
   }
 
   case class ValidateRequiredBoolean(
-      override val value: () => Boolean,
-      isEnabled: () => Boolean = () => true,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[Boolean] {
+    override val value: () => Boolean,
+    isEnabled: () => Boolean = () => true,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[Boolean] {
 
     override def validate(): Boolean = !isEnabled() || value()
 
@@ -90,8 +90,8 @@ object Validators {
    * Validates if entered value is email.
    */
   case class ValidateEmail(
-      override val value: () => String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+    override val value: () => String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = {
       val v = Option(value()) map (_.trim) getOrElse ""
@@ -112,8 +112,8 @@ object Validators {
    * Validates if entered value is URL
    */
   case class ValidateUrl(
-      override val value: () => String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+    override val value: () => String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = {
       import net.liftweb.util.Helpers.tryo
@@ -140,17 +140,16 @@ object Validators {
    * @param max maximal allowed value
    */
   case class ValidateNumber(
-      min: Option[Double],
-      max: Option[Double],
-      override val value: () => String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+    min: Option[Double],
+    max: Option[Double],
+    override val value: () => String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = {
       import net.liftweb.util.Helpers.asDouble
       val v = Option(value()) map (_.trim) getOrElse ""
       v.isEmpty || (asDouble(v).map(ival =>
-        min.map(_ <= ival).getOrElse(true) && max.map(_ >= ival).getOrElse(true)
-      ) getOrElse false)
+        min.map(_ <= ival).getOrElse(true) && max.map(_ >= ival).getOrElse(true)) getOrElse false)
     }
 
     override def check: JObject = {
@@ -192,17 +191,16 @@ object Validators {
    * @param max maximal allowed value
    */
   case class ValidateInt(
-      min: Option[Int],
-      max: Option[Int],
-      override val value: () => String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+    min: Option[Int],
+    max: Option[Int],
+    override val value: () => String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = {
       import net.liftweb.util.Helpers.asInt
       val v = Option(value()) map (_.trim) getOrElse ""
       v.isEmpty || (asInt(v).map(ival =>
-        min.map(_ <= ival).getOrElse(true) && max.map(_ >= ival).getOrElse(true)
-      ) getOrElse false)
+        min.map(_ <= ival).getOrElse(true) && max.map(_ >= ival).getOrElse(true)) getOrElse false)
     }
 
     override def check: JObject = {
@@ -245,10 +243,11 @@ object Validators {
    * @param expected expected value. This value will be verified on server side.
    * @param selector CSS selector to the input to compare this control value with.
    */
-  case class ValidateEquals(override val value: () => String,
-      val expected: () => String,
-      selector: String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+  case class ValidateEquals(
+    override val value: () => String,
+    val expected: () => String,
+    selector: String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = value() == expected()
 
@@ -269,8 +268,8 @@ object Validators {
    * validated. The second one is optional message to be shown if value is not valid.
    */
   case class ValidateRemote(
-      override val value: () => String,
-      func: String => (Boolean, Option[String]))(implicit ctx: ValidationContext) extends Validator[String] {
+    override val value: () => String,
+    func: String => (Boolean, Option[String]))(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate(): Boolean = func(value())._1
 
@@ -294,7 +293,7 @@ object Validators {
       }
 
       S.fmapFunc(NFuncHolder(asyncFunc)) { key =>
-        val url = S.encodeURL(S.contextPath + "/" + LiftRules.ajaxPath) + "?" + key + "=_"
+        val url = S.encodeURL(S.contextPath + "/" + LiftRules.liftPath + "/ajax/" + S.renderVersion) + "?" + key + "=_"
         "remote" -> (("url" -> url) ~ ("type" -> "post"))
       }
     }
@@ -312,10 +311,10 @@ object Validators {
    * @param max maximal allowed length
    */
   case class ValidateLength(
-      min: Option[Int],
-      max: Option[Int],
-      override val value: () => String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] with Loggable {
+    min: Option[Int],
+    max: Option[Int],
+    override val value: () => String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] with Loggable {
 
     override def validate(): Boolean = {
       Option(value()) map (s => {
@@ -351,8 +350,7 @@ object Validators {
           case _ =>
             logger.warn("Both min and max are None")
             JObject(Nil)
-        }
-      )
+        })
     }
   }
 
@@ -367,9 +365,9 @@ object Validators {
    * @param regex regular expression to test the value.
    */
   case class ValidateRegex(
-      regex: Regex,
-      override val value: () => String,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
+    regex: Regex,
+    override val value: () => String,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[String] {
 
     override def validate() = {
       val v = Option(value()) map (_.trim) getOrElse ""
@@ -387,9 +385,9 @@ object Validators {
   }
 
   case class ValidateFile(
-      acceptType: String,
-      override val value: () => FileParamHolder,
-      override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[FileParamHolder] {
+    acceptType: String,
+    override val value: () => FileParamHolder,
+    override val errorMessage: Option[String] = None)(implicit ctx: ValidationContext) extends Validator[FileParamHolder] {
 
     override def validate() = {
       val ctype = Option(value()).flatMap(h => ContentType.parse(h.mimeType).headOption)

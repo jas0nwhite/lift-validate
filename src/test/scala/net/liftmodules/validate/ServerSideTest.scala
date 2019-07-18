@@ -16,10 +16,10 @@
 package net.liftmodules.validate
 
 import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import net.liftweb.http.FileParamHolder
 
-class ServerSideTest extends FlatSpec with ShouldMatchers {
+class ServerSideTest extends FlatSpec with Matchers {
 
   import Validators._
   import global._
