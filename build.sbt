@@ -3,8 +3,8 @@ import LiftModuleKeys.{liftVersion, liftEdition}
 name := "validate"
 organization := "net.liftmodules"
 description := "Lift validate module"
-licenses += ("Apache 2.0 License", url("http://www.apache.org/licenses/LICENSE-2.0"))
-homepage := Some(url("http://github.com/limansky/lift-validate"))
+licenses += ("Apache 2.0 License", url("https://www.apache.org/licenses/LICENSE-2.0"))
+homepage := Some(url("https://github.com/limansky/lift-validate"))
 version in ThisBuild := "2.0-SNAPSHOT"
 liftVersion in ThisBuild := {
   liftVersion ?? "3.3.0"
@@ -73,7 +73,7 @@ pomExtra := (
               <developer>
                 <id>limansky</id>
                 <name>Mike Limansky</name>
-                <url>http://github.com/limansky</url>
+                <url>https://github.com/limansky</url>
               </developer>
               <developer>
                 <id>victor</id>
